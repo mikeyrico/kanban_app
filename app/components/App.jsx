@@ -3,12 +3,14 @@ import Notes from './Notes.jsx';
 import NoteActions from '../actions/NoteActions';
 import NoteStore from '../stores/NoteStore';
 import AltContainer from 'alt-container';
+// altContainer injects store data into components
+// simplifies connection logic
 
 export default class App extends React.Component {
 
 
   render() {
-    console.log('<><> Note store', NoteStore.getState());
+
     return (
       <div>
         <button className="add-note" onClick={this.addNote}>+</button>
@@ -19,6 +21,9 @@ export default class App extends React.Component {
           }}
         >
           <Notes
+          // before wer were injecting notes here, not necessary with altContainer
+          // notes will be passed down as props
+          // since app is the parent, passes down to all child components
           onEdit={this.editNote}
           onDelete={this.deleteNote} />
         </AltContainer>
