@@ -1,10 +1,6 @@
 import React from 'react';
 
-class Lanes extends from React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+export default class Lanes extends React.Component {
   render() {
     return (
       <div className="lanes">

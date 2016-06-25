@@ -10,11 +10,11 @@ class LaneStore {
   }
 
   create(lane) {
-    const lanes - this.lanes;
+    const lanes = this.lanes;
     lane.id = uuid.v4();
     lane.notes = lane.notes || [];
     this.setState({
-      lanes: [...this.lanes, lane];
+      lanes: [...this.lanes, lane]
     });
   }
 }
