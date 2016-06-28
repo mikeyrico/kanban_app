@@ -1,24 +1,45 @@
 import React from 'react';
-import {DragSource} from 'react-dnd';
+import {DragSource, DropTarget} from 'react-dnd';
 import ItemTypes from '../constants/itemTypes';
 
 const noteSource = {
   beginDrag(props) {
-    console.log('begin draggin note', props);
-    return {};
+    return {
+      id: props.id
+    };
   }
 };
 
-@DragSource(ItemTypes.NOTE, noteSource, (connect) => ({
-  connectDragSource: connect.dragSource()
+const noteTarget = {
+  hover(targetProps, monitor) {
+    const targetId = targetProps.id;
+    const sourceProps = monitor.getItem();
+    const sourceId = sourceProps.id;
+
+    if (sourceId !== targetId) {
+      targetProps.onMove({sourceId, targetId});
+    }
+  }
+}
+
+@DragSource(ItemTypes.NOTE, noteSource, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging() // maps isdragging state to isdragging props
+}))
+
+@DropTarget(ItemTypes.NOTE, noteTarget, (connect) => ({
+  connectDropTarget: connect.dropTarget()
 }))
 
 export default class Note extends React.Component {
   render() {
-    const {connectDragSource, id, onMove, ...props} = this.props;
+    const {connectDragSource, connectDropTarget, id, onMove, isDragging, editing, ...props} = this.props;
+    const dragSource = editing ? a => a : connectDragSource;
 
-    return connectDragSource(
-      <li {...props}>{props.childre}</li>
-    );
+    return dragSource(connectDropTarget(
+      <li style={{
+        opacity: isDragging ? 0 : 1
+      }} {...props}>{props.children}</li>
+    ));
   }
 }

@@ -1,3 +1,3 @@
 import alt from '../libs/alt';
 
-export default alt.generateActions('create', 'attachToLane', 'detachFromLane', 'update', 'delete');
+export default alt.generateActions('create', 'attachToLane', 'detachFromLane', 'update', 'delete', 'move');
