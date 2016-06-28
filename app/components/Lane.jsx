@@ -9,6 +9,7 @@ import Editable from './Editable.jsx';
 export default class Lane extends React.Component {
   render() {
     const {lane, ...props} = this.props;
+    console.log(...props);
 
     return (
       <div {...props}>
@@ -88,10 +89,10 @@ export default class Lane extends React.Component {
     const laneId = this.props.lane.id;
 
     LaneActions.update({id:laneId, editing: true});
-  }
+  };
 
   activateNoteEdit(id) {
-    LaneActions.update({id, editing:true});
+    NoteActions.update({id, editing:true});
   }
 
 

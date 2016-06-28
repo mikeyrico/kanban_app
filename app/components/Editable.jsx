@@ -2,7 +2,7 @@ import React from 'react';
 
 export default class Editable extends React.Component {
   render() {
-    const {value, onEdit, onVlaueClick, editing, ...props} = this.props;
+    const {value, onEdit, onValueClick, editing, ...props} = this.props;
 
     return (
       <div {...props}>
@@ -18,7 +18,7 @@ export default class Editable extends React.Component {
         null
       }
       autoFocus={true}
-      defaultValue={this.props.task}
+      defaultValue={this.props.value}
       onBlur={this.finishEdit}
       onKeyPress={this.checkEnter} />;
   };
@@ -26,7 +26,7 @@ export default class Editable extends React.Component {
   renderValue = () => {
     const onDelete = this.props.onDelete;
     return (
-      <div onClick={this.props.valueClick}>
+      <div onClick={this.props.onValueClick}>
         <span className="value">{this.props.value}</span>
         {onDelete ? this.renderDelete() : null}
       </div>
