@@ -9,6 +9,11 @@ import LaneStore from '../stores/LaneStore';
 // altContainer injects store data into components
 // simplifies connection logic
 
+import {DragDropContext} from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+
+@DragDropContext(HTML5Backend)
+
 export default class App extends React.Component {
 
 
