@@ -12,7 +12,8 @@ const pkg = require('./package.json');
 const PATHS = {
   app: path.join(__dirname, 'app'),
   build: path.join(__dirname, 'build'),
-  style: path.join(__dirname, 'app/main.css')
+  style: path.join(__dirname, 'app/main.css'),
+  test: path.join(__dirname, 'tests'),
 };
 
 process.env.BABEL_ENV = TARGET;
@@ -20,7 +21,8 @@ process.env.BABEL_ENV = TARGET;
 const common = {
   entry: {
     app: PATHS.app,
-    style: PATHS.style
+    style: PATHS.style,
+    // test: PATHS.test
   },
   resolve: { // dictates which files to resolve modules?
     extensions: ['', '.js', '.jsx']
@@ -50,6 +52,9 @@ const common = {
 
 if (TARGET === 'start' || !TARGET) {
   module.exports = merge(common, {
+    entry: {
+      style: PATHS.style
+    },
     devTool: 'eval-source-map',
     devServer: {
       historyApiFallback: true,
@@ -81,7 +86,8 @@ if (TARGET === 'build' || TARGET === 'stats') {
     entry: {
       vendor: Object.keys(pkg.dependencies).filter(function(v) {
         return v !== 'alt-utils';
-      })
+      }),
+      style: PATHS.style
     },
     module: {
       loaders: [
@@ -107,5 +113,32 @@ if (TARGET === 'build' || TARGET === 'stats') {
       new CleanPlugin([PATHS.build]),
       new ExtractTextPlugin('[name].[chunkhash].css'),
     ]
+  });
+}
+
+if (TARGET === 'test' || TARGET === 'tdd') {
+  module.exports = merge(common, {
+    devtool: 'inline-source-map',
+    resolve: {
+      alias: {
+        'app': PATHS.app
+      }
+    },
+    module: {
+      preLoaders: [
+        {
+          test: /\.jsx?$/,
+          loaders: ['isparta-instrumenter'],
+          include: PATHS.app
+        }
+      ],
+      loaders: [
+        {
+          test: /\.jsx?$/,
+          loaders: ['babel?cacheDirectory'],
+          include: PATHS.test
+        }
+      ]
+    }
   });
 }
