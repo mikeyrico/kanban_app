@@ -62,7 +62,7 @@ describe('Editable', () => {
 
     let deleteComponent = findRenderedDOMComponentWithClass(component, 'delete');
 
-    Simulate.click(deleteComponent));
+    Simulate.click(deleteComponent);
     assert.equal(deleted, true);
   });
 });
